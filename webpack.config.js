@@ -5,6 +5,7 @@ var HtmlWebpackPlugin = require( 'html-webpack-plugin' );
 var autoprefixer      = require( 'autoprefixer' );
 var ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
 var CopyWebpackPlugin = require( 'copy-webpack-plugin' );
+var glob              = require('glob');
 
 console.log( 'WEBPACK GO!');
 
@@ -15,8 +16,8 @@ var TARGET_ENV = process.env.npm_lifecycle_event === 'build' ? 'production' : 'd
 var commonConfig = {
 
   output: {
-    path:       path.resolve( __dirname, 'dist/' ),
-    filename: '[hash].js',
+    path:     path.resolve(__dirname, 'dist/'),
+    filename: '[name].[hash].js'
   },
 
   resolve: {
@@ -52,10 +53,13 @@ if ( TARGET_ENV === 'development' ) {
 
   module.exports = merge( commonConfig, {
 
-    entry: [
-      'webpack-dev-server/client?http://localhost:8080',
-      path.join( __dirname, 'src/index.js' )
-    ],
+    entry: {
+      app: [
+        'webpack-dev-server/client?http://localhost:8080',
+        path.join( __dirname, 'src/index.js' )
+      ],
+      styles: glob.sync('./**/*.sass')
+    },
 
     devServer: {
       inline:   true,
@@ -76,6 +80,15 @@ if ( TARGET_ENV === 'development' ) {
             'css-loader',
             'postcss-loader',
             'sass-loader'
+          ]
+        },
+        {
+          test: /\.sass$/,
+          loaders: [
+            'style-loader',
+            'css-loader',
+            'postcss-loader',
+            'sass-loader?indentedSyntax'
           ]
         }
       ]
@@ -106,6 +119,15 @@ if ( TARGET_ENV === 'production' ) {
             'postcss-loader',
             'sass-loader'
           ])
+        },
+        {
+          test: /\.sass$/,
+          loaders: [
+            'style-loader',
+            'css-loader',
+            'postcss-loader',
+            'sass-loader?indentedSyntax'
+          ]
         }
       ]
     },
