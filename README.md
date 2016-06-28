@@ -1,6 +1,10 @@
 # elm-webpack-starter
 
-A simple Webpack setup for writing [Elm](http://elm-lang.org/) apps:
+### "With Sass"
+
+I've added some webpack config so that all sass files in or under the project directory will be included by webpack automatically.
+
+### A simple Webpack setup for writing [Elm](http://elm-lang.org/) apps:
 
 * Dev server with live reloading, HMR
 * Support for CSS/SCSS (with Autoprefixer), image assets
